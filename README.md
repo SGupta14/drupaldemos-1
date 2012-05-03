@@ -1,4 +1,4 @@
-drupaldemos
+DrupalDemos
 ===========
 
-Drupal Demos
+Site demonstrating drupal modules usage 
