@@ -8,23 +8,33 @@
  */
 function node_tabs_menu() {
   $items = array();
-
-  $items['node/%node/description'] = array(
-    'title' => t('Description'),
-    'description' => t('Desription'),
-    'page callback' => 'view_description',
-    'access callback' => TRUE,
-    'type' => MENU_LOCAL_TASK
-  );
-  
-  $items['node/%node/howto'] = array(
-    'title' => t('How to'),
-    'description' => t('How to'),
-    'page callback' => 'view_howto',
-    'page argument' => array(current_path()),
-    'access callback' => TRUE,
-    'type' => MENU_LOCAL_TASK
-  );
+	$current_path = current_path();
+	$path_to_match = explode("/", $current_path);
+	$result = db_select('node', 'n')
+		-> fields('n', array('type'))
+		-> condition('nid', $path_to_match[1], '=')
+		-> execute()
+		-> fetchAssoc();
+		
+	if ($result['type'] != 'demo7') {
+		
+	  $items['node/%node/description'] = array(
+	    'title' => t('Description'),
+	    'description' => t('Desription'),
+	    'page callback' => 'view_description',
+	    'access callback' => TRUE,
+	    'type' => MENU_LOCAL_TASK
+	  );
+	  
+	  $items['node/%node/howto'] = array(
+	    'title' => t('How to'),
+	    'description' => t('How to'),
+	    'page callback' => 'view_howto',
+	    'page argument' => array(current_path()),
+	    'access callback' => TRUE,
+	    'type' => MENU_LOCAL_TASK
+	  );
+	}
 
   return $items;
 }
