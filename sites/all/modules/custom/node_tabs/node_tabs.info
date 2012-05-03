@@ -1,0 +1,5 @@
+name = Node Tabs
+description = "Creates tabs on node page"
+core = 7.x
+version = 7.x-1.0-dev
+files[] = node_tabs.module

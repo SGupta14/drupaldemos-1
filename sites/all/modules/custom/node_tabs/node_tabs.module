@@ -1,0 +1,71 @@
+<?php
+/**
+ * @file
+ * Creates demo, description and how to tabs in node page
+ */
+/**
+ * Implements hook_menu().
+ */
+function node_tabs_menu() {
+  $items = array();
+
+  $items['node/%node/description'] = array(
+    'title' => t('Description'),
+    'description' => t('Desription'),
+    'page callback' => 'view_description',
+    'access callback' => TRUE,
+    'type' => MENU_LOCAL_TASK
+  );
+  
+//  $items['node/%node/howto'] = array(
+//    'title' => t('How to'),
+//    'description' => t('How to'),
+//    'page callback' => 'view_howto',
+//    'page argument' => array(current_path()),
+//    'access callback' => TRUE,
+//    'type' => MENU_LOCAL_TASK
+//  );
+
+  return $items;
+}
+
+/**
+ * Displays the description column from table
+ */
+function view_description() {
+  $current_url = current_path();
+  $param = explode("/", $current_url);
+  $new_url = $param[0] . "/" . $param[1];
+  $query = db_select('field_data_field_demolink', 'fddl')
+            -> fields('fddl', array('entity_id'))
+            -> condition('field_demolink_url', $new_url, '=')
+            -> execute();
+              
+  $entity_id = $query->fetchAssoc();
+              
+  $query = db_select('field_data_body', 'fdb')
+            -> fields('fdb', array('body_value'))
+            -> condition('entity_id', $entity_id, '=')
+            -> execute();
+            
+  $description = $query->fetchAssoc();
+  return $description['body_value'];
+}
+
+function view_howto() {
+  $query = db_select('field_data_field_demolink', 'fddl')
+            -> fields('fddl', array('entity_id'))
+            -> condition('field_demolink_url', $current_url, '=')
+            -> execute();
+            
+  $entity_id = $query->fetchAssoc();
+  
+  $query = db_select('field_data_howto', 'fdh')
+            -> fields('fdh', array('howto'))
+            -> condition('entity_id', $entity_id, '=')
+            -> execute();
+            
+  $howto = $query->fetchAssoc();
+  
+  return $howto;
+}
