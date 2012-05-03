@@ -17,14 +17,14 @@ function node_tabs_menu() {
     'type' => MENU_LOCAL_TASK
   );
   
-//  $items['node/%node/howto'] = array(
-//    'title' => t('How to'),
-//    'description' => t('How to'),
-//    'page callback' => 'view_howto',
-//    'page argument' => array(current_path()),
-//    'access callback' => TRUE,
-//    'type' => MENU_LOCAL_TASK
-//  );
+  $items['node/%node/howto'] = array(
+    'title' => t('How to'),
+    'description' => t('How to'),
+    'page callback' => 'view_howto',
+    'page argument' => array(current_path()),
+    'access callback' => TRUE,
+    'type' => MENU_LOCAL_TASK
+  );
 
   return $items;
 }
@@ -36,9 +36,9 @@ function view_description() {
   $current_url = current_path();
   $param = explode("/", $current_url);
   $new_url = $param[0] . "/" . $param[1];
-  $query = db_select('field_data_field_demolink', 'fddl')
+  $query = db_select('field_data_field_demo7link', 'fddl')
             -> fields('fddl', array('entity_id'))
-            -> condition('field_demolink_url', $new_url, '=')
+            -> condition('field_demo7link_url', $new_url, '=')
             -> execute();
               
   $entity_id = $query->fetchAssoc();
@@ -53,19 +53,22 @@ function view_description() {
 }
 
 function view_howto() {
-  $query = db_select('field_data_field_demolink', 'fddl')
+  $current_url = current_path();
+  $param = explode("/", $current_url);
+  $new_url = $param[0] . "/" . $param[1];
+  $query = db_select('field_data_field_demo7link', 'fddl')
             -> fields('fddl', array('entity_id'))
-            -> condition('field_demolink_url', $current_url, '=')
+            -> condition('field_demo7link_url', $new_url, '=')
             -> execute();
             
   $entity_id = $query->fetchAssoc();
   
-  $query = db_select('field_data_howto', 'fdh')
-            -> fields('fdh', array('howto'))
+  $query = db_select('field_data_field_how_to', 'fdht')
+            -> fields('fdht', array('field_how_to_value'))
             -> condition('entity_id', $entity_id, '=')
             -> execute();
             
   $howto = $query->fetchAssoc();
   
-  return $howto;
+  return $howto['field_how_to_value'];
 }
