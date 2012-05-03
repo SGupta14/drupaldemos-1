@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Webform setup feature.
+ */
+
+include_once 'features_webform_setup.features.inc';
